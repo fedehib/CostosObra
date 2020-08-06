@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - yw-arq</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" href="~/Content/jquery.scroltable.css">
+    <link rel="stylesheet" href="~/Content/jquery-ui.css">
+    <link rel="stylesheet" href="~/Content/select2.css">
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+    <script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.es.js"></script>
+    <script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.js"></script>
+    <script src="~/Scripts/jquery.mask.js"></script>
+    <script src="~/Scripts/maskmoney.js"></script>
+    <script src="~/Scripts/jquery.scroltable.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Scripts/select2.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Costos obras", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if ((bool)Session["login"] == true)
+                    {
+                        <li>@Html.ActionLink("Ctas Ctes", "Index", "CtaCte")</li>
+                        <li>@Html.ActionLink("Proveedores", "Index", "Proveedor")</li>
+                        <li>@Html.ActionLink("Proyectos", "Index", "Proyecto")</li>
+                        <li>@Html.ActionLink("Clientes", "Index", "Cliente")</li>
+                        <li>@Html.ActionLink("Rubros", "Index", "Rubro")</li>
+                        <li>@Html.ActionLink("Conceptos", "Index", "Concepto")</li>
+                    }
+                    </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - yw-arq</p>
+        </footer>
+    </div>
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script>
+
+    try {
+        $('table').scroltable();
+    } catch (e) {
+
+    }
+
+
+</script>

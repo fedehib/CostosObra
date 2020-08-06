@@ -1,0 +1,83 @@
+﻿@model CostosObras.Models.proyecto
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar</h2>
+
+<h3>Desea eliminar este registro?</h3>
+<div>
+    <h4>Proyecto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nombre
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.observacion)
+        </dd>
+        <dt>
+            Cliente
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cliente.descripcion)
+        </dd>
+
+        <dt>
+            Costo Total
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:c2}", Model.costototal))
+        </dd>
+
+        <dt>
+            Costo Real
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:c2}", Model.costoreal))
+        </dd>
+
+        <dt>
+            Archivo presupuesto
+        </dt>
+
+        <dd>
+            @Html.ActionLink("Descargar", "Descargar", new { id = Model.id })
+        </dd>
+
+
+        <dt>
+            Fecha fin
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd/MM/yyyy}", Model.fechafin))
+        </dd>
+
+
+    </dl>
+
+    <div class="form-group">
+        @if (ViewBag.Mensaje != "")
+        {
+            <div class="alert alert-warning alert-danger" role="alert" id="alertaboton">
+                <h6>@ViewBag.Mensaje</h6>
+            </div>
+        }
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

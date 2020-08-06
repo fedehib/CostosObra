@@ -1,0 +1,70 @@
+﻿@model CostosObras.Models.ctacte
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar</h2>
+
+<h3>Desea eliminar este registro?</h3>
+<div>
+    <h4>Cuenta Corriente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd/MM/yyyy}", Model.fecha))
+        </dd>
+        <dt>
+            Concepto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.concepto.descripcion)
+        </dd>
+
+        <dt>
+            Monto
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:c2}", Model.monto))
+        </dd>
+
+        <dt>
+            Proyecto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proyecto.observacion)
+        </dd>
+        <dt>
+           Proveedor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proveedor.descripcion)
+        </dd>
+
+        <dt>
+            Observacion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.observacion)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

@@ -1,0 +1,496 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CostosObraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="adicionales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idproyecto" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="300" />
+          <Property Name="monto" Type="decimal" Precision="19" Scale="2" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <EntityType Name="concepto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="positivo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ctacte">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idconcepto" Type="int" Nullable="false" />
+          <Property Name="monto" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="idproyecto" Type="int" Nullable="false" />
+          <Property Name="idproveedor" Type="int" />
+          <Property Name="observacion" Type="varchar" MaxLength="300" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="proveedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="idrubro" Type="int" />
+        </EntityType>
+        <EntityType Name="proyecto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="observacion" Type="varchar" MaxLength="300" />
+          <Property Name="idcliente" Type="int" Nullable="false" />
+          <Property Name="costototal" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="costoreal" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="archivo" Type="varbinary(max)" />
+          <Property Name="nombrearchivo" Type="varchar" MaxLength="100" />
+          <Property Name="fechafin" Type="date" />
+        </EntityType>
+        <EntityType Name="rubro">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_adicionales_proyecto">
+          <End Role="proyecto" Type="Self.proyecto" Multiplicity="1" />
+          <End Role="adicionales" Type="Self.adicionales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proyecto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="adicionales">
+              <PropertyRef Name="idproyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctacte_concepto">
+          <End Role="concepto" Type="Self.concepto" Multiplicity="1" />
+          <End Role="ctacte" Type="Self.ctacte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="concepto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ctacte">
+              <PropertyRef Name="idconcepto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctacte_proveedor">
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
+          <End Role="ctacte" Type="Self.ctacte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proveedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ctacte">
+              <PropertyRef Name="idproveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctacte_proyecto">
+          <End Role="proyecto" Type="Self.proyecto" Multiplicity="1" />
+          <End Role="ctacte" Type="Self.ctacte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proyecto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ctacte">
+              <PropertyRef Name="idproyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_proveedor_rubro">
+          <End Role="rubro" Type="Self.rubro" Multiplicity="0..1" />
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rubro">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="proveedor">
+              <PropertyRef Name="idrubro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_proyecto_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="1" />
+          <End Role="proyecto" Type="Self.proyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="proyecto">
+              <PropertyRef Name="idcliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CostosObraModelStoreContainer">
+          <EntitySet Name="adicionales" EntityType="Self.adicionales" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="concepto" EntityType="Self.concepto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ctacte" EntityType="Self.ctacte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="proveedor" EntityType="Self.proveedor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="proyecto" EntityType="Self.proyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="rubro" EntityType="Self.rubro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_adicionales_proyecto" Association="Self.FK_adicionales_proyecto">
+            <End Role="proyecto" EntitySet="proyecto" />
+            <End Role="adicionales" EntitySet="adicionales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctacte_concepto" Association="Self.FK_ctacte_concepto">
+            <End Role="concepto" EntitySet="concepto" />
+            <End Role="ctacte" EntitySet="ctacte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctacte_proveedor" Association="Self.FK_ctacte_proveedor">
+            <End Role="proveedor" EntitySet="proveedor" />
+            <End Role="ctacte" EntitySet="ctacte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctacte_proyecto" Association="Self.FK_ctacte_proyecto">
+            <End Role="proyecto" EntitySet="proyecto" />
+            <End Role="ctacte" EntitySet="ctacte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_proveedor_rubro" Association="Self.FK_proveedor_rubro">
+            <End Role="rubro" EntitySet="rubro" />
+            <End Role="proveedor" EntitySet="proveedor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_proyecto_cliente" Association="Self.FK_proyecto_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="proyecto" EntitySet="proyecto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CostosObraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="adicionales">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idproyecto" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="2" />
+          <NavigationProperty Name="proyecto" Relationship="Self.FK_adicionales_proyecto" FromRole="adicionales" ToRole="proyecto" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="proyecto" Relationship="Self.FK_proyecto_cliente" FromRole="cliente" ToRole="proyecto" />
+        </EntityType>
+        <EntityType Name="concepto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="positivo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ctacte" Relationship="Self.FK_ctacte_concepto" FromRole="concepto" ToRole="ctacte" />
+        </EntityType>
+        <EntityType Name="ctacte">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idconcepto" Type="Int32" Nullable="false" />
+          <Property Name="monto" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="idproyecto" Type="Int32" Nullable="false" />
+          <Property Name="idproveedor" Type="Int32" />
+          <Property Name="observacion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="concepto" Relationship="Self.FK_ctacte_concepto" FromRole="ctacte" ToRole="concepto" />
+          <NavigationProperty Name="proveedor" Relationship="Self.FK_ctacte_proveedor" FromRole="ctacte" ToRole="proveedor" />
+          <NavigationProperty Name="proyecto" Relationship="Self.FK_ctacte_proyecto" FromRole="ctacte" ToRole="proyecto" />
+        </EntityType>
+        <EntityType Name="proveedor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="idrubro" Type="Int32" />
+          <NavigationProperty Name="ctacte" Relationship="Self.FK_ctacte_proveedor" FromRole="proveedor" ToRole="ctacte" />
+          <NavigationProperty Name="rubro" Relationship="Self.FK_proveedor_rubro" FromRole="proveedor" ToRole="rubro" />
+        </EntityType>
+        <EntityType Name="proyecto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="observacion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="idcliente" Type="Int32" Nullable="false" />
+          <Property Name="costototal" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="costoreal" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="archivo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="nombrearchivo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fechafin" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="adicionales" Relationship="Self.FK_adicionales_proyecto" FromRole="proyecto" ToRole="adicionales" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK_proyecto_cliente" FromRole="proyecto" ToRole="cliente" />
+          <NavigationProperty Name="ctacte" Relationship="Self.FK_ctacte_proyecto" FromRole="proyecto" ToRole="ctacte" />
+        </EntityType>
+        <EntityType Name="rubro">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="proveedor" Relationship="Self.FK_proveedor_rubro" FromRole="rubro" ToRole="proveedor" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_adicionales_proyecto">
+          <End Role="proyecto" Type="Self.proyecto" Multiplicity="1" />
+          <End Role="adicionales" Type="Self.adicionales" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proyecto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="adicionales">
+              <PropertyRef Name="idproyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_proyecto_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="1" />
+          <End Role="proyecto" Type="Self.proyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="proyecto">
+              <PropertyRef Name="idcliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctacte_concepto">
+          <End Role="concepto" Type="Self.concepto" Multiplicity="1" />
+          <End Role="ctacte" Type="Self.ctacte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="concepto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ctacte">
+              <PropertyRef Name="idconcepto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctacte_proveedor">
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="0..1" />
+          <End Role="ctacte" Type="Self.ctacte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proveedor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ctacte">
+              <PropertyRef Name="idproveedor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ctacte_proyecto">
+          <End Role="proyecto" Type="Self.proyecto" Multiplicity="1" />
+          <End Role="ctacte" Type="Self.ctacte" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="proyecto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ctacte">
+              <PropertyRef Name="idproyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_proveedor_rubro">
+          <End Role="rubro" Type="Self.rubro" Multiplicity="0..1" />
+          <End Role="proveedor" Type="Self.proveedor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="rubro">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="proveedor">
+              <PropertyRef Name="idrubro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CostosObraEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="adicionales" EntityType="Self.adicionales" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="concepto" EntityType="Self.concepto" />
+          <EntitySet Name="ctacte" EntityType="Self.ctacte" />
+          <EntitySet Name="proveedor" EntityType="Self.proveedor" />
+          <EntitySet Name="proyecto" EntityType="Self.proyecto" />
+          <EntitySet Name="rubro" EntityType="Self.rubro" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_adicionales_proyecto" Association="Self.FK_adicionales_proyecto">
+            <End Role="proyecto" EntitySet="proyecto" />
+            <End Role="adicionales" EntitySet="adicionales" />
+          </AssociationSet>
+          <AssociationSet Name="FK_proyecto_cliente" Association="Self.FK_proyecto_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="proyecto" EntitySet="proyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctacte_concepto" Association="Self.FK_ctacte_concepto">
+            <End Role="concepto" EntitySet="concepto" />
+            <End Role="ctacte" EntitySet="ctacte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctacte_proveedor" Association="Self.FK_ctacte_proveedor">
+            <End Role="proveedor" EntitySet="proveedor" />
+            <End Role="ctacte" EntitySet="ctacte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ctacte_proyecto" Association="Self.FK_ctacte_proyecto">
+            <End Role="proyecto" EntitySet="proyecto" />
+            <End Role="ctacte" EntitySet="ctacte" />
+          </AssociationSet>
+          <AssociationSet Name="FK_proveedor_rubro" Association="Self.FK_proveedor_rubro">
+            <End Role="rubro" EntitySet="rubro" />
+            <End Role="proveedor" EntitySet="proveedor" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CostosObraModelStoreContainer" CdmEntityContainer="CostosObraEntities">
+          <EntitySetMapping Name="adicionales">
+            <EntityTypeMapping TypeName="CostosObraModel.adicionales">
+              <MappingFragment StoreEntitySet="adicionales">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idproyecto" ColumnName="idproyecto" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="CostosObraModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="concepto">
+            <EntityTypeMapping TypeName="CostosObraModel.concepto">
+              <MappingFragment StoreEntitySet="concepto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="positivo" ColumnName="positivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ctacte">
+            <EntityTypeMapping TypeName="CostosObraModel.ctacte">
+              <MappingFragment StoreEntitySet="ctacte">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idconcepto" ColumnName="idconcepto" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="idproyecto" ColumnName="idproyecto" />
+                <ScalarProperty Name="idproveedor" ColumnName="idproveedor" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="proveedor">
+            <EntityTypeMapping TypeName="CostosObraModel.proveedor">
+              <MappingFragment StoreEntitySet="proveedor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="idrubro" ColumnName="idrubro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="proyecto">
+            <EntityTypeMapping TypeName="CostosObraModel.proyecto">
+              <MappingFragment StoreEntitySet="proyecto">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="observacion" ColumnName="observacion" />
+                <ScalarProperty Name="idcliente" ColumnName="idcliente" />
+                <ScalarProperty Name="costototal" ColumnName="costototal" />
+                <ScalarProperty Name="costoreal" ColumnName="costoreal" />
+                <ScalarProperty Name="archivo" ColumnName="archivo" />
+                <ScalarProperty Name="nombrearchivo" ColumnName="nombrearchivo" />
+                <ScalarProperty Name="fechafin" ColumnName="fechafin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rubro">
+            <EntityTypeMapping TypeName="CostosObraModel.rubro">
+              <MappingFragment StoreEntitySet="rubro">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CostosObraModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

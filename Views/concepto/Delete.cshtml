@@ -1,0 +1,48 @@
+﻿@model CostosObras.Models.concepto
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar</h2>
+
+<h3>Desea eliminar este registro?</h3>
+<div>
+    <h4>Concepto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Descripcion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            Impacta positivamente
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.positivo)
+        </dd>
+
+    </dl>
+    <div class="form-group">
+        @if (ViewBag.Mensaje != "")
+        {
+            <div class="alert alert-warning alert-danger" role="alert" id="alertaboton">
+                <h6>@ViewBag.Mensaje</h6>
+            </div>
+        }
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index")
+        </div>
+    }
+</div>

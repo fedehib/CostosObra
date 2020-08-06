@@ -1,0 +1,58 @@
+﻿@model IEnumerable<CostosObras.Models.adicionales>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear nuevo registro", "Create", new { idproyecto = ViewBag.idproyecto })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Proyecto
+        </th>
+        <th>
+            Descripcion
+        </th>
+        <th>
+            Monto
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.proyecto.observacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descripcion)
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.monto))
+            </td>
+
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td bgcolor="#FF7F50">@Convert.ToString(string.Format("{0:c2}", Model.Sum(i => i.monto)))</td>
+            <td></td>
+            
+        </tr>
+
+    </tfoot>
+
+</table>

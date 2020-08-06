@@ -1,0 +1,48 @@
+﻿@model CostosObras.Models.adicionales
+
+@{
+    ViewBag.Title = "Eliminar";
+}
+
+<h2>Eliminar</h2>
+
+<h3>Desea eliminar este registro?</h3>
+<div>
+    <h4>Adicionales</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Proyecto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proyecto.observacion)
+        </dd>
+        <dt>
+            Descripcion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            Monto
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:c2}", Model.monto))
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Volver al listado", "Index", new { idproyecto = Model.idproyecto })
+        </div>
+    }
+</div>

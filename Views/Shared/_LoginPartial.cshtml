@@ -1,0 +1,16 @@
+﻿
+@if ((bool)Session["login"] == true)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li> <a href="javascript:document.getElementById('logoutForm').submit()">Cerrar sesión</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Iniciar sesión", "Login", "Account")</li>
+    </ul>
+}

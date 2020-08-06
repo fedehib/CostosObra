@@ -1,0 +1,261 @@
+﻿@model IEnumerable<CostosObras.Models.ProyectosActivos>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>Proyectos activos</h2>
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    Proyecto
+                </th>
+                <th>
+                    Ingresos
+                </th>
+
+                <th>
+                    Egresos
+                </th>
+                <th>
+                    Saldo restante
+                </th>
+                <th>
+                    Costo total
+                </th>
+                <th>
+                    Adicionales
+                </th>
+                <th>
+                    Costo real
+                <th>
+                    Registros
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                <a href="@Url.Action("IndexProyecto", "CtaCte", new { id = item.proyecto.id})"> @Html.DisplayFor(modelItem => item.proyecto.observacion) </a>
+
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.ingresos.Sum(i => i.monto)))
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.egresos.Sum(i => i.monto)))
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.proyecto.costototal + item.proyecto.adicionales.Sum(i => i.monto) - item.ingresos.Sum(i => i.monto)))
+            </td>
+
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.proyecto.costototal))
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.proyecto.adicionales.Sum(i => i.monto) ))
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.proyecto.costoreal))
+            </td>
+            <td>
+                @Convert.ToString(item.proyecto.ctacte.Count)
+            </td>
+
+
+        </tr>
+            }
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td bgcolor="#FF7F50">@Convert.ToString(string.Format("{0:c2}", ViewBag.totalingreso))</td>
+                    <td bgcolor="#5F9EA0">@Convert.ToString(string.Format("{0:c2}", ViewBag.totalegreso))</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+
+            </tfoot>
+
+
+
+        </table>
+
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>Ingresos por proyecto activo</h2>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    Proyecto
+                </th>
+                <th>
+                    Ingresos
+                </th>
+
+                <th>
+                    Fecha
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                foreach (var item1 in item.ingresos.Where(x => x.idproyecto == item.proyecto.id))
+                {
+
+                    <tr>
+                        @if (item.ingresos.Where(x => x.idproyecto == item.proyecto.id).First() == item1)
+                        {
+                            <td rowspan="@item.ingresos.Where(x => x.idproyecto == item.proyecto.id).Count()" style="vertical-align: middle;text-align: left;">
+                                <a href="@Url.Action("IndexCliente", "CtaCte", new { id = item.proyecto.id, idcliente =item.ingresos.First().proyecto.idcliente })"> @Html.DisplayFor(modelItem => item.proyecto.observacion) </a>
+
+                            </td>
+                        }
+                        <td>
+                            @Convert.ToString(string.Format("{0:c2}", item1.monto))
+                        </td>
+                        <td>
+                            @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item1.fecha))
+                        </td>
+                    </tr>
+                }
+                if (item.ingresos.Count() > 0 && item.ingresos.Where(x => x.idproyecto == item.proyecto.id).Count() == 0)
+                {
+                    <tr>
+                        <td>
+                            <a href="@Url.Action("IndexCliente", "CtaCte", new { id = item.proyecto.id, idcliente =item.ingresos.First().proyecto.idcliente })"> @Html.DisplayFor(modelItem => item.proyecto.cliente.descripcion) </a>
+
+                        </td>
+                        <td>
+                            @Convert.ToString(string.Format("{0:c2}", 0))
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td>
+                    </td>
+                    <td bgcolor="#FF7F50">
+                        @Convert.ToString(string.Format("{0:c2}", item.ingresos.Sum(i => i.monto)))
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <h2>Egresos por proveedor por proyecto activo</h2>
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    Proyecto
+                </th>
+                <th>Proveedor</th>
+                <th>
+                    Egresos
+                </th>
+                <th>
+                    Fecha
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                IEnumerable<int> proyectos = item.egresos.Select(x => x.idproyecto).Distinct();
+                foreach (int proyecto in proyectos)
+                {
+                    bool nuevoproyecto =false;
+                
+                    IEnumerable<int?> proveedores = item.egresos.Where(x => x.idproyecto == proyecto).Select(x => x.idproveedor).Distinct();
+                    foreach (int? proveedor in proveedores)
+                    {
+                        bool nuevoproveedor = false;
+                
+                        foreach (var item2 in item.egresos.Where(x => x.idproyecto == proyecto && x.idproveedor == proveedor))
+                        {
+
+        <tr>
+            @if (!nuevoproyecto && !nuevoproveedor)
+            {
+                int cantidad = item.egresos.Where(x => x.idproyecto == proyecto).Count();
+                int cantidadprove = item.egresos.Where(x => x.idproyecto == proyecto).Select(x=>x.idproveedor).Distinct().Count();
+                nuevoproyecto = true;
+                <td rowspan="@(cantidad+cantidadprove)" style="vertical-align: middle;text-align: left;">
+                    <a href="@Url.Action("IndexProyecto", "CtaCte", new { id = proyecto })"> @Html.DisplayFor(modelItem => item2.proyecto.observacion) </a>
+
+                </td>
+
+                nuevoproveedor = true;
+                <td rowspan="@item.egresos.Where(x => x.idproyecto == proyecto && x.idproveedor == proveedor).Count()" style="vertical-align: middle;text-align: left;">
+                    <a href="@Url.Action("IndexProveedor", "CtaCte", new {  idproveedor = proveedor })"> @Html.DisplayFor(modelItem => item2.proveedor.descripcion) </a>
+                </td>
+            }
+            else if (nuevoproyecto && !nuevoproveedor)
+            {
+                nuevoproveedor = true;
+                
+                <td rowspan="@item.egresos.Where(x => x.idproyecto == proyecto && x.idproveedor == proveedor).Count()" style="vertical-align: middle;text-align: left;">
+                    <a href="@Url.Action("IndexProveedor", "CtaCte", new {  idproveedor = proveedor })"> @Html.DisplayFor(modelItem => item2.proveedor.descripcion) </a>
+                </td>
+            }
+           
+
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item2.monto))
+            </td>
+            <td>
+                @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item2.fecha))
+            </td>
+
+
+        </tr>
+                        }
+                        <tr>
+                            <td>
+                            </td>
+                            <td bgcolor="#BDB76B">
+                                @Convert.ToString(string.Format("{0:c2}", item.egresos.Where(x => x.idproyecto == proyecto && x.idproveedor == proveedor).Sum(i => i.monto)))
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td bgcolor="#5F9EA0">
+                            @Convert.ToString(string.Format("{0:c2}", item.egresos.Where(x => x.idproyecto == proyecto).Sum(i => i.monto)))
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+
+                }
+            }
+
+        </table>
+    </div>
+
+</div>

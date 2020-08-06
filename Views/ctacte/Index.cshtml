@@ -1,0 +1,79 @@
+﻿@model IEnumerable<CostosObras.Models.ctacte>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Crear nuevo registro", "Create")
+</p>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Fecha
+        </th>
+        <th>
+            Concepto
+        </th>
+        <th>
+            Monto
+        </th>
+        <th>
+            Proyecto
+        </th>
+        <th>
+            Proveedor
+        </th>
+
+        <th>
+            Observacion
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.fecha))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.concepto.descripcion)
+            </td>
+
+            <td>
+                @Convert.ToString(string.Format("{0:c2}", item.monto))
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.proyecto.observacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.proveedor.descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.observacion)
+            </td>
+
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Detalles", "Details", new { id = item.id }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td bgcolor="#FF7F50">@Convert.ToString(string.Format("{0:c2}", Model.Sum(item => item.monto)))</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+    </tfoot>
+
+</table>

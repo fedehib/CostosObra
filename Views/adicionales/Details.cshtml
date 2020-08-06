@@ -1,0 +1,43 @@
+﻿@model CostosObras.Models.adicionales
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Adicionales</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Proyecto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proyecto.observacion)
+        </dd>
+        <dt>
+            Descripcion
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            Monto
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:c2}", Model.monto))
+        </dd>
+
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Volver al listado", "Index", new { idproyecto = Model.idproyecto })
+</p>

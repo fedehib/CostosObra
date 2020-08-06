@@ -1,0 +1,62 @@
+﻿@model CostosObras.Models.ctacte
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Cuenta Corriente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Fecha
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:dd/MM/yyyy}", Model.fecha))
+        </dd>
+        <dt>
+            Concepto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.concepto.descripcion)
+        </dd>
+        <dt>
+            Monto
+        </dt>
+
+        <dd>
+            @Convert.ToString(string.Format("{0:c2}", Model.monto))
+        </dd>
+        <dt>
+            Proyecto
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proyecto.observacion)
+        </dd>
+        <dt>
+            Proveedor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.proveedor.descripcion)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.observacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.observacion)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Volver al listado", "Index")
+</p>
