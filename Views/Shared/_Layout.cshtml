@@ -10,7 +10,6 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <link rel="stylesheet" href="~/Content/bootstrap-datetimepicker.css" />
-    <link rel="stylesheet" href="~/Content/jquery.scroltable.css">
     <link rel="stylesheet" href="~/Content/jquery-ui.css">
     <link rel="stylesheet" href="~/Content/select2.css">
     <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
@@ -18,7 +17,6 @@
     <script type="text/javascript" src="~/scripts/bootstrap-datetimepicker.js"></script>
     <script src="~/Scripts/jquery.mask.js"></script>
     <script src="~/Scripts/maskmoney.js"></script>
-    <script src="~/Scripts/jquery.scroltable.js"></script>
     <script src="~/Scripts/jquery-ui.js"></script>
     <script src="~/Scripts/select2.js"></script>
 </head>
@@ -61,14 +59,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-<script>
-
-    try {
-        $('table').scroltable();
-    } catch (e) {
-
-    }
-
-
-</script>
