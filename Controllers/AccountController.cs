@@ -31,7 +31,7 @@ namespace SUM.Controllers
         public ActionResult Login(string cd_usuario, string tx_contrasena)
         {
             //TODO: cambiar usuario y psw
-            if (tx_contrasena.ToLower() == "jerusalem12" && cd_usuario.ToLower() == "yani")
+            if (tx_contrasena.ToLower() == "jerusalem123456" && cd_usuario.ToLower() == "fede")
             {
                 Session["login"] = true;
                 return RedirectToAction("Index", "Home");
